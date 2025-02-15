@@ -1,17 +1,18 @@
 import { database } from "~/database/context";
 import * as schema from "~/database/schema";
 
-import type { Route } from "./+types/home";
 import { Welcome } from "../welcome/welcome";
+import type { ActionFunctionArgs, LoaderFunctionArgs, MetaArgs } from "react-router";
+import type { ComponentProps } from "react";
 
-export function meta({}: Route.MetaArgs) {
+export function meta({}: MetaArgs) {
   return [
     { title: "New React Router App" },
     { name: "description", content: "Welcome to React Router!" },
   ];
 }
 
-export async function action({ request }: Route.ActionArgs) {
+export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
   let name = formData.get("name");
   let email = formData.get("email");
@@ -33,13 +34,14 @@ export async function action({ request }: Route.ActionArgs) {
   }
 }
 
-export async function loader({ context }: Route.LoaderArgs) {
+export async function loader({ context }: LoaderFunctionArgs) {
   const db = database();
 
   const guestBook = await db.query.guestBook.findMany({
     columns: {
       id: true,
       name: true,
+      email: true,
     },
   });
 
@@ -49,7 +51,7 @@ export async function loader({ context }: Route.LoaderArgs) {
   };
 }
 
-export default function Home({ actionData, loaderData }: Route.ComponentProps) {
+export default function Home({ actionData, loaderData }: ComponentProps<any>) {
   return (
     <Welcome
       guestBook={loaderData.guestBook}

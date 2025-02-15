@@ -11,6 +11,7 @@ export function Welcome({
   guestBook: {
     name: string;
     id: number;
+    email: string;
   }[];
   guestBookError?: string;
   message: string;
@@ -98,9 +99,9 @@ export function Welcome({
             </Form>
             <ul className="text-center">
               {<li className="p-3">{message}</li>}
-              {guestBook.map(({ id, name }) => (
+              {guestBook.map(({ id, name, email }) => (
                 <li key={id} className="p-3">
-                  {name}
+                  {name}, {email}
                 </li>
               ))}
             </ul>
